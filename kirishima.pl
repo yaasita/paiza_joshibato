@@ -5,7 +5,6 @@ use Data::Dumper;
 use feature qw(say);
 
 package Sugoroku;
-use Data::Dumper;
 
 sub new {
     my $class = shift;
