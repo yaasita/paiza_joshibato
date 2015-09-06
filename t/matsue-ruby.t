@@ -17,5 +17,13 @@ subtest 'example2' => sub { #{{{
     chomp $result;
     is $result,"hujxnrnwoownrnxjuh";
 }; #}}}
+
+subtest 'user1' => sub { #{{{
+    my $result = `cat matsue-ruby_user1.dat | ../matsue-ruby.pl`;
+    chomp $result;
+    my $kotae = "a b b a";
+    $kotae =~ s/ //g;
+    is $result, $kotae;
+}; #}}}
 done_testing;
 

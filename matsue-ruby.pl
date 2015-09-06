@@ -12,6 +12,9 @@ my @list_c; #中央に置く必要があるやつ
     chomp @input;
     my $rev = sub {
         my $in = shift;
+        if (length($in) == 1){
+            return 1;
+        }
         my $reverse = reverse $in;
         if ($in eq $reverse){
             return 0;
@@ -27,7 +30,7 @@ my @list_c; #中央に置く必要があるやつ
         push (@list,$_) if $rev->($_);
     }
     for (@input){
-        push (@list_c,$_) if $_ eq reverse $_;
+        push (@list_c,$_) if $_ eq reverse $_ and length($_) > 1;
     }
 }
 # 前半,後半,中央部に分けて保存
@@ -59,8 +62,10 @@ my (@part_a,@part_b,@part_c);
     for (@part_a){
         print;
     }
-    for (@part_c){
-        print;
+    if (@part_c+0 > 0){
+        for (@part_c){
+            print;
+        }
     }
     for (reverse @part_b){
         print;
