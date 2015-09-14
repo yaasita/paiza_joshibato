@@ -13,3 +13,7 @@
 ## 霧島京子
 
 + https://paiza.jp/poh/joshibato/kirishima/result/154aef1d?o=493fa98c
+
+## 松江Ruby会議ミッション
+
++ https://paiza.jp/poh/joshibato/matsue-ruby/result/e866e16a?o=e74508a0
