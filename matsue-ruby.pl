@@ -5,69 +5,55 @@ use feature qw(say);
 
 <STDIN>;
 # 回分になりえる単語作成
-my @list;
-my @list_c; #中央に置く必要があるやつ
-{
-    my @input = <STDIN>;
-    chomp @input;
-    my $rev = sub {
-        my $in = shift;
-        if (length($in) == 1){
-            return 1;
-        }
-        my $reverse = reverse $in;
-        if ($in eq $reverse){
-            return 0;
-        }
-        for (@input){
-            if ($_ eq $reverse){
-                return 1;
+my @in = <STDIN>;
+chomp @in;
+
+my (@list, @list_c); # list_cは中央に置くやつ
+
+# 単語が1文字の場合
+if ( length($in[0]) == 1 ){
+    my %count;
+    $count{$_}++ for @in;
+    for (keys %count){
+        my $key = $_;
+        push (@list, $key) for 1..(int ($count{$key}/2));
+        push (@list_c,$key) if $count{$key} % 2 == 1;
+    }
+}
+# 単語が2文字以上の場合
+if ( length($in[0]) >= 2 ){
+    my %count;
+    $count{$_}++ for @in;
+    my $i = 0;
+    for (sort keys %count){
+        my $key = $_;
+        next unless exists($count{$key});
+        if ( exists ($count{reverse $key}) and $count{reverse $key} > 0){
+            $count{$key}++;
+            $count{reverse $key}--;
+            if ($count{reverse $key} == 0){
+                delete($count{reverse $key});
             }
         }
-        return 0;
-    };
-    for (@input){
-        push (@list,$_) if $rev->($_);
     }
-    for (@input){
-        push (@list_c,$_) if $_ eq reverse $_ and length($_) > 1;
+    for (keys %count){
+        my $key = $_;
+        push (@list, $key) for 1..(int ($count{$key}/2));
+        push (@list_c, $key) if $count{$key} % 2 == 1;
     }
+    @list_c = grep { reverse($_) eq $_ } @list_c;
 }
-# 前半,後半,中央部に分けて保存
-# part_a + part_c + part_b
-my (@part_a,@part_b,@part_c);
-{
-    my $pop = sub {
-        my $ref = shift;
-        @{$ref} = sort @{$ref};
-        my $a = shift @{$ref};
-        my $i=0;
-        for (@{$ref}){
-            last if $_ eq reverse $a;
-            $i++;
-        }
-        my $b = splice(@{$ref},$i,1);
-        return ($a,$b);
-    };
-    while (@list+0 != 0){
-        my ($a , $b) = $pop->(\@list);
-        push (@part_a,$a);
-        push (@part_b,$b);
-    }
-    my @c = sort @list_c;
-    push (@part_c,shift @c);
-}
+
 # 出力
 {
-    for (@part_a){
-        print;
+    # a + b + c の順で出す
+    my (@a,$b,@c);
+    for (sort @list){
+        push(@a,$_);
+        push(@c,scalar reverse $_)
     }
-    if (@part_c+0 > 0){
-        for (@part_c){
-            print;
-        }
-    }
-    for (reverse @part_b){
-        print;
-    }
+    $b = (sort @list_c)[0];
+    print for @a;
+    print $b if defined $b;
+    print for reverse @c;
 }

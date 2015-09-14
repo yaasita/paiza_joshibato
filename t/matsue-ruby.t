@@ -21,7 +21,7 @@ subtest 'example2' => sub { #{{{
 subtest 'user1' => sub { #{{{
     my $result = `cat matsue-ruby_user1.dat | ../matsue-ruby.pl`;
     chomp $result;
-    my $kotae = "a b b a";
+    my $kotae = "a b c b a";
     $kotae =~ s/ //g;
     is $result, $kotae;
 }; #}}}
